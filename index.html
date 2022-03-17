@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #0f053b;
+            color: #fff;
+            text-align: center;
+            font-family: sans-serif;
+            padding: 4rem 2rem 2rem 2rem;
+        }
+        
+        .title {
+            font-size: 60px;
+            margin: 0
+        }
+        
+        #demo {
+            background-color: orangered;
+            display: inline-block;
+            border-radius: 10px;
+            /* line-height: 100px; */
+            padding: 20px 10px;
+        }
+        
+        #userInput {
+            height: 50px;
+            width: 200px;
+            border: none;
+            padding: 0 20px;
+        }
+        
+        .buttonContainer {
+            margin: 1rem;
+        }
+        
+        #startBtn,
+        #pauseBtn,
+        #resumeBtn,
+        .resetBtn {
+            height: 50px;
+            width: 120px;
+            border: none;
+            padding: 0 20px;
+            font-weight: bold;
+            margin: .5rem;
+            border-radius: 10px;
+            color: #fff;
+        }
+        
+        #startBtn {
+            background-color: #008000;
+        }
+        
+        #pauseBtn {
+            background-color: #d87421;
+            display: none;
+        }
+        
+        #resumeBtn {
+            display: none;
+            background-color: #2161d8;
+        }
+        
+        .resetBtn {
+            background-color: #d82121;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <h1 class="title">Count Down</h1>
+        <h3 id="demo">00 days : 00 hrs : 00 mins : 00 secs</h3>
+
+
+        <div>
+            <input type="text" id="userInput" placeholder="Enter number(hours)">
+        </div>
+
+
+        <div class="buttonContainer">
+            <button id="startBtn" onclick="startCount()">
+                Start
+            </button>
+
+            <button id="pauseBtn" onclick="pauseCount()">
+                Pause
+            </button>
+
+            <button id="resumeBtn" onclick="resumeCount()">
+                Resume
+            </button>
+
+            <button class="resetBtn" id="resetBtn" onclick="resetCount()">
+                Reset
+            </button>
+        </div>
+
+    </div>
+
+
+    <script>
+        var buttonStart = document.getElementById('start');
+        var output = document.getElementById('demo');
+        var begin = document.getElementById('begin');
+        var userInput = document.getElementById('userInput');
+        var interval;
+
+        var temp;
+
+
+        function startCount() {
+            let num = userInput.value;
+            if (isNaN(num) || num == "") {
+                alert('Please enter a number')
+                return
+            } else {
+                interval = setInterval(valueCalc, 1000);
+                userInput.value = "";
+                temp = (num * 3600);
+                console.log(temp);
+
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('pauseBtn').style.display = 'inline-block';
+                document.getElementById('resetBtn').style.display = 'inline-block';
+            }
+        }
+
+        function pauseCount() {
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resumeBtn').style.display = 'inline-block';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+
+            clearInterval(interval);
+            pauseValue = temp;
+            console.log("first pause", pauseValue);
+        }
+
+        function resumeCount() {
+            document.getElementById('pauseBtn').style.display = 'inline-block';
+            document.getElementById('resumeBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+
+            clearInterval(interval);
+            console.log("pause time", pauseValue);
+            interval = setInterval(valueCalc, 1000);
+        }
+
+        function resetCount() {
+            clearInterval(interval);
+            output.textContent = "00 days : 00 hrs : 00 mins : 00 secs"
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('pauseBtn').style.display = 'none';
+            document.getElementById('resumeBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+
+        }
+
+        function valueCalc() {
+            d = Math.floor(temp / 86400)
+            hr = Math.floor((temp % 86400) / 3600);
+            min = Math.floor((temp % 3600) / 60);
+            sec = Math.floor(temp % 60);
+
+            dDisplay = d > 0 ? d + (d == 1 ? " day" : " days ") : "0 days";
+            hrDisplay = hr > 0 ? hr + (hr == 1 ? " hour " : " hours ") : "0 hour";
+            minDisplay = min > 0 ? min + (min == 1 ? " minute " : " minutes ") : "0 minute";
+            secDisplay = sec > 0 ? sec + (sec == 1 ? " second" : " seconds") : "0 seconds";
+
+            output.innerHTML = dDisplay + " : " + hrDisplay + " : " + minDisplay + " : " + secDisplay;
+            temp--;
+
+            console.log(temp);
+        };
+    </script>
+
+</body>
+
+</html>
